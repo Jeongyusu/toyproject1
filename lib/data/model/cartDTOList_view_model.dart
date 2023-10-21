@@ -20,8 +20,6 @@ class CartDTOListModel {
 // 2. 창고
 class CartDTOListViewModel extends StateNotifier<CartDTOListModel?> {
   CartDTOListViewModel(super._state, this.ref);
-
-  final mContext = navigatorKey.currentContext;
   Ref ref;
 
   Future<void> notifyInit() async {
@@ -32,7 +30,28 @@ class CartDTOListViewModel extends StateNotifier<CartDTOListModel?> {
     Logger().d(toyResponseDTO.response);
     state = CartDTOListModel(toyResponseDTO.response);
   }
+  void plusQuantity(int index) {
+    Logger().d("플러스 클릭됨");
+    if (state != null) {
+      if (index >= 0 && index < state!.cartDTO.cartProducts.length) {
+        state!.cartDTO.cartProducts[index].quentity++;
+      }
+      state = state;
+    }
+  }
 
+  void minusQuantity(int index) {
+    Logger().d("마이너스 클릭됨");
+    if (state != null) {
+      if (index >= 0 && index < state!.cartDTO.cartProducts.length) {
+        if (state!.cartDTO.cartProducts[index].quentity > 1) {
+          state!.cartDTO.cartProducts[index].quentity--;
+        }
+      }
+      state = state;
+
+    }
+  }
   // Future<void> notifyAdd(PostSaveReqDTO dto) async {
   //   SessionStore sessionStore = ref.read(sessionProvider);
   //
