@@ -9,5 +9,5 @@ class ResponseDTO {
   ResponseDTO.fromJson(Map<String, dynamic> json)
       : code = json["code"],
         msg = json["msg"],
-        data = json["data"];
+        data = json["response"];
 }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_blog/_core/constants/http.dart';
 import 'package:flutter_blog/data/dto/post_request.dart';
 import 'package:flutter_blog/data/dto/response_dto.dart';
+import 'package:flutter_blog/data/dto/toy_response_dto.dart';
 import 'package:flutter_blog/data/dto/user_request.dart';
 import 'package:flutter_blog/data/model/cartDTO.dart';
 import 'package:flutter_blog/data/model/cart_productDTO.dart';
@@ -12,26 +13,21 @@ import 'package:logger/logger.dart';
 
 // V -> P(전역프로바이더, 뷰모델) -> R
 class CartDTORepository {
-  Future<ResponseDTO> fetchCartList() async {
+  Future<ToyResponseDTO> fetchCartList() async {
     try {
       // 1. 통신
+      Logger().d("fetchCartList동작중");
       final response = await dio.get("/api/carts");
-      Logger().d(response);
+      Logger().d(response.data);
       // 2. ResponseDTO 파싱
-      ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
-      response.data = CartProductDTO.fromJson(responseDTO.data);
-      Logger().d(responseDTO.code);
+     ToyResponseDTO toyResponseDTO = ToyResponseDTO.fromJson(response.data);
+     toyResponseDTO.response = CartDTO.fromJson(toyResponseDTO.response);
 
       // 3. ResponseDTO의 data 파싱
-      List<dynamic> mapList = responseDTO.data as List<dynamic>;
-      List<CartDTO> cartDTOs = mapList.map((e) => CartDTO.fromJson(e)).toList();
-
-      // 4. 파싱된 데이터를 다시 공통 DTO로 덮어씌우기
-      responseDTO.data = cartDTOs;
-
-      return responseDTO;
+      Logger().d("CartProductDTO파싱완료");
+      return toyResponseDTO;
     } catch (e) {
-      return ResponseDTO(-1, "카트 목록 불러오기 실패", null);
+      return ToyResponseDTO(false, "카트 목록 불러오기 실패", null);
     }
   }
 

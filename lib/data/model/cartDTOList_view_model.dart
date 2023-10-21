@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/data/dto/post_request.dart';
 import 'package:flutter_blog/data/dto/response_dto.dart';
+import 'package:flutter_blog/data/dto/toy_response_dto.dart';
 import 'package:flutter_blog/data/model/cartDTO.dart';
 import 'package:flutter_blog/data/model/post.dart';
 import 'package:flutter_blog/data/repository/cartDTO_repsository.dart';
@@ -12,8 +13,8 @@ import 'package:logger/logger.dart';
 
 // 1. 창고 데이터
 class CartDTOListModel {
-  List<CartDTO> cartDTOs;
-  CartDTOListModel(this.cartDTOs);
+  CartDTO cartDTO;
+  CartDTOListModel(this.cartDTO);
 }
 
 // 2. 창고
@@ -26,9 +27,10 @@ class CartDTOListViewModel extends StateNotifier<CartDTOListModel?> {
   Future<void> notifyInit() async {
     // // jwt 가져오기
     // SessionStore sessionStore = ref.read(sessionProvider);
-
-    ResponseDTO responseDTO = await CartDTORepository().fetchCartList();
-    state = CartDTOListModel(responseDTO.data);
+    ToyResponseDTO toyResponseDTO = await CartDTORepository().fetchCartList();
+    Logger().d("여까지실행");
+    Logger().d(toyResponseDTO.response);
+    state = CartDTOListModel(toyResponseDTO.response);
   }
 
   // Future<void> notifyAdd(PostSaveReqDTO dto) async {

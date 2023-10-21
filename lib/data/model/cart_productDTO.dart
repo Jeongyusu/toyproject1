@@ -19,3 +19,4 @@ class CartProductDTO {
         beforeDiscount = json["beforeDiscount"],
         quentity = json["quentity"];
 }
+
